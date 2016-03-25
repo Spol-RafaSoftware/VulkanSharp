@@ -760,12 +760,6 @@ namespace VulkanSharp.Generator
 			return keywords.Contains (paramName) ? "@" + paramName : paramName;
 		}
 
-		string GetSafeParameterName(string paramName)
-		{
-			// if paramName is a reserved name
-			return keywords.Contains (paramName) ? "@" + paramName : paramName;
-		}
-
 		string GetManagedHandleType (string handleType)
 		{
 			return handleType == "VK_DEFINE_HANDLE" ? "IntPtr" : "UInt64";
