@@ -17,6 +17,22 @@ namespace VulkanSharp.Generator
 
 		Dictionary<string, string> typesTranslation = new Dictionary<string, string> ();
 		HashSet<string> structures = new HashSet<string> ();
+		HashSet<string> blittableTypes = new HashSet<string>()
+		{
+			"Byte",
+			"SByte",
+			"Int32",
+			"UInt32",
+			"Int64",
+			"UInt64",
+			"float",
+			"double",
+			"IntPtr",
+			"UIntPtr",
+			"Bool32",
+			"DeviceSize",
+		};
+
 		Dictionary<string, HandleInfo> handles = new Dictionary<string,HandleInfo> ();
 		Dictionary<string, List<EnumExtensionInfo>> enumExtensions = new Dictionary<string, List<EnumExtensionInfo>> ();
 
@@ -58,7 +74,7 @@ namespace VulkanSharp.Generator
 
 		void LoadSpecification ()
 		{
-			specTree = XElement.Load (specXMLFile);
+			specTree = XElement.Load (specXMLFile, LoadOptions.PreserveWhitespace);
 
 			if (specTree.Name != "registry")
 				throw new Exception ("problem parsing the file, top element is not 'registry'");
@@ -254,6 +270,8 @@ namespace VulkanSharp.Generator
 			}
 
 			typesTranslation [name] = csName;
+			// enums are blittable too
+			blittableTypes.Add(csName);
 			IndentWriteLine ("public enum {0} : int", csName);
 			IndentWriteLine ("{");
 			IndentLevel++;
@@ -586,7 +604,52 @@ namespace VulkanSharp.Generator
 			typesTranslation [name] = csName;
 			structures.Add (csName);
 
+			IsStructBlittable (structElement, csName);
 			return false;
+		}
+
+		void IsStructBlittable (XElement structElement, string csName)
+		{
+			bool isBlittable = true;
+			foreach (var member in structElement.Elements ("member"))
+			{
+				string type = member.Element ("type").Value;
+				string memberName = member.Element ("name").Value;
+				string csTypeName = GetTypeCsName (type);
+				string memberValue = member.Value;
+
+				// detect if array
+				if (memberValue.IndexOf ('[') > 0)
+				{
+					string[] tokens = memberValue.Split (new[] {
+						'[',
+						']',
+						' '
+					}, StringSplitOptions.RemoveEmptyEntries);
+					if (tokens.Length == 3)
+					{
+						// type should be first element
+						if (!blittableTypes.Contains (tokens [0]))
+						{
+							return;
+						}
+					}
+					else
+					{
+						Console.WriteLine ("warning: {0}.{1} has an invalid array format", csName, memberName);
+						return;
+					}
+				}
+				else if (!blittableTypes.Contains (csTypeName))
+				{
+					isBlittable = false;
+					return;
+				}
+			}
+			if (isBlittable)
+			{
+				blittableTypes.Add (csName);
+			}
 		}
 
 		void LearnStructsAndUnions ()
@@ -706,6 +769,8 @@ namespace VulkanSharp.Generator
 				var optional = param.Attribute ("optional");
 				bool isOptionalParam = (optional != null && optional.Value == "true");
 				bool isPointer = param.Value.Contains (type + "*");
+				bool isNullableIntPtr = RequiresNullableIntPtr (csType, isOptionalParam, isPointer);
+
 				bool isDoublePointer = param.Value.Contains (type + "**");
 				bool isConst = false;
 				bool isStruct = structures.Contains (csType);
@@ -743,10 +808,33 @@ namespace VulkanSharp.Generator
 					string paramName = isFixed ? "ptr" + name : name;
 					bool useHandlePtr = !isFixed && (isStruct || isHandle);
 
+					string prefix = "";
+					if (isPointer && !isStruct && !isFixed)
+					{
+						prefix = "&";
+					}
+
 					if (isOptionalParam && isPointer && !isOut)
-						Write ("{0} != null ? {0}{1} : null", GetSafeParameterName(paramName), useHandlePtr ? ".m" : "");
+					{
+						string nullFallBack = "null";
+
+						if (isNullableIntPtr)
+						{
+							prefix = "(IntPtr) " + prefix;
+							nullFallBack = "IntPtr.Zero";
+						}
+
+						Write ("{0} != null ? {1}{0}{2} : {3}", GetSafeParameterName (paramName), prefix, useHandlePtr ? ".m" : "", nullFallBack);
+					}
 					else
-						Write ("{0}{1}{2}", (isPointer && !isStruct && !isFixed) ? "&" : "", GetSafeParameterName(paramName), useHandlePtr ? ".m" : "");
+					{
+						if (isNullableIntPtr)
+						{
+							prefix = "(IntPtr) " + prefix;
+						}
+
+						Write ("{0}{1}{2}", prefix, GetSafeParameterName(paramName), useHandlePtr ? ".m" : "");
+					}
 				} else
 					Write ("{0}{1} {2}", isOut ? "out " : "", csType, keywords.Contains (name) ? "@" + name : name);
 			}
@@ -912,6 +1000,15 @@ namespace VulkanSharp.Generator
 			"object",
 		};
 
+		bool RequiresNullableIntPtr (string csType, bool isOptional, bool isPointer)
+		{	
+			bool isBlittable = blittableTypes.Contains (csType);
+			bool isStruct = structures.Contains (csType);
+
+			bool isNullable = isPointer && isStruct && isOptional && !isBlittable;
+			return isNullable;
+		}
+
 		void WriteUnmanagedCommandParameters (XElement commandElement)
 		{
 			bool first = true;
@@ -922,8 +1019,13 @@ namespace VulkanSharp.Generator
 				string csType = GetTypeCsName (type);
 
 				bool isPointer = param.Value.Contains (type + "*");
-				if (handles.ContainsKey (csType)) {
-					var handle = handles [csType];
+				XAttribute optional = param.Attribute ("optional");
+				bool isOptional = (optional != null && optional.Value == "true");
+
+				var isNullable = RequiresNullableIntPtr (csType, isOptional, isPointer);
+
+				HandleInfo handle = null;
+				if (handles.TryGetValue (csType, out handle)) {
 					if (first && !isPointer)
 						handle.commands.Add (commandElement);
 					csType = handle.type == "VK_DEFINE_HANDLE" ? "IntPtr" : "UInt64";
@@ -937,8 +1039,16 @@ namespace VulkanSharp.Generator
 						csType = "string";
 						isPointer = false;
 						break;
-					default:
-						csType += "*";
+					default:						
+						if (isNullable)
+						{
+							csType = "IntPtr";
+						}
+						else
+						{
+							csType += "*";
+						}
+
 						break;
 					}
 				} else if (first && handles.ContainsKey (csType))
