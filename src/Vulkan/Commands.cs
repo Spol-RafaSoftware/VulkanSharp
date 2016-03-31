@@ -19,7 +19,7 @@ namespace Vulkan
 			unsafe {
 				fixed (UInt32* ptrPropertyCount = &PropertyCount) {
 					Properties = new LayerProperties ();
-					return Interop.NativeMethods.vkEnumerateInstanceLayerProperties (ptrPropertyCount, Properties.m);
+					return Interop.NativeMethods.vkEnumerateInstanceLayerProperties (ptrPropertyCount, (IntPtr) Properties.m);
 				}
 			}
 		}
@@ -29,7 +29,7 @@ namespace Vulkan
 			unsafe {
 				fixed (UInt32* ptrPropertyCount = &PropertyCount) {
 					Properties = new ExtensionProperties ();
-					return Interop.NativeMethods.vkEnumerateInstanceExtensionProperties (pLayerName, ptrPropertyCount, Properties.m);
+					return Interop.NativeMethods.vkEnumerateInstanceExtensionProperties (pLayerName, ptrPropertyCount, (IntPtr) Properties.m);
 				}
 			}
 		}

@@ -18,10 +18,10 @@ namespace Vulkan.Interop
 		const string VulkanLibrary = "vulkan";
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern Result vkCreateInstance (InstanceCreateInfo* CreateInfo, AllocationCallbacks* Allocator, IntPtr* Instance);
+		internal static unsafe extern Result vkCreateInstance (InstanceCreateInfo* CreateInfo, IntPtr Allocator, IntPtr* Instance);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern void vkDestroyInstance (IntPtr instance, AllocationCallbacks* Allocator);
+		internal static unsafe extern void vkDestroyInstance (IntPtr instance, IntPtr Allocator);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
 		internal static unsafe extern Result vkEnumeratePhysicalDevices (IntPtr instance, UInt32* PhysicalDeviceCount, IntPtr* PhysicalDevices);
@@ -51,22 +51,22 @@ namespace Vulkan.Interop
 		internal static unsafe extern Result vkGetPhysicalDeviceImageFormatProperties (IntPtr physicalDevice, Format format, ImageType type, ImageTiling tiling, ImageUsageFlags usage, ImageCreateFlags flags, ImageFormatProperties* ImageFormatProperties);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern Result vkCreateDevice (IntPtr physicalDevice, DeviceCreateInfo* CreateInfo, AllocationCallbacks* Allocator, IntPtr* Device);
+		internal static unsafe extern Result vkCreateDevice (IntPtr physicalDevice, DeviceCreateInfo* CreateInfo, IntPtr Allocator, IntPtr* Device);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern void vkDestroyDevice (IntPtr device, AllocationCallbacks* Allocator);
+		internal static unsafe extern void vkDestroyDevice (IntPtr device, IntPtr Allocator);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern Result vkEnumerateInstanceLayerProperties (UInt32* PropertyCount, LayerProperties* Properties);
+		internal static unsafe extern Result vkEnumerateInstanceLayerProperties (UInt32* PropertyCount, IntPtr Properties);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern Result vkEnumerateInstanceExtensionProperties (string pLayerName, UInt32* PropertyCount, ExtensionProperties* Properties);
+		internal static unsafe extern Result vkEnumerateInstanceExtensionProperties (string pLayerName, UInt32* PropertyCount, IntPtr Properties);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern Result vkEnumerateDeviceLayerProperties (IntPtr physicalDevice, UInt32* PropertyCount, LayerProperties* Properties);
+		internal static unsafe extern Result vkEnumerateDeviceLayerProperties (IntPtr physicalDevice, UInt32* PropertyCount, IntPtr Properties);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern Result vkEnumerateDeviceExtensionProperties (IntPtr physicalDevice, string pLayerName, UInt32* PropertyCount, ExtensionProperties* Properties);
+		internal static unsafe extern Result vkEnumerateDeviceExtensionProperties (IntPtr physicalDevice, string pLayerName, UInt32* PropertyCount, IntPtr Properties);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
 		internal static unsafe extern void vkGetDeviceQueue (IntPtr device, UInt32 queueFamilyIndex, UInt32 queueIndex, IntPtr* Queue);
@@ -81,10 +81,10 @@ namespace Vulkan.Interop
 		internal static unsafe extern Result vkDeviceWaitIdle (IntPtr device);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern Result vkAllocateMemory (IntPtr device, MemoryAllocateInfo* AllocateInfo, AllocationCallbacks* Allocator, UInt64* Memory);
+		internal static unsafe extern Result vkAllocateMemory (IntPtr device, MemoryAllocateInfo* AllocateInfo, IntPtr Allocator, UInt64* Memory);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern void vkFreeMemory (IntPtr device, UInt64 memory, AllocationCallbacks* Allocator);
+		internal static unsafe extern void vkFreeMemory (IntPtr device, UInt64 memory, IntPtr Allocator);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
 		internal static unsafe extern Result vkMapMemory (IntPtr device, UInt64 memory, DeviceSize offset, DeviceSize size, UInt32 flags, IntPtr* pData);
@@ -123,10 +123,10 @@ namespace Vulkan.Interop
 		internal static unsafe extern Result vkQueueBindSparse (IntPtr queue, UInt32 bindInfoCount, BindSparseInfo* BindInfo, UInt64 fence);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern Result vkCreateFence (IntPtr device, FenceCreateInfo* CreateInfo, AllocationCallbacks* Allocator, UInt64* Fence);
+		internal static unsafe extern Result vkCreateFence (IntPtr device, FenceCreateInfo* CreateInfo, IntPtr Allocator, UInt64* Fence);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern void vkDestroyFence (IntPtr device, UInt64 fence, AllocationCallbacks* Allocator);
+		internal static unsafe extern void vkDestroyFence (IntPtr device, UInt64 fence, IntPtr Allocator);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
 		internal static unsafe extern Result vkResetFences (IntPtr device, UInt32 fenceCount, UInt64* Fences);
@@ -138,16 +138,16 @@ namespace Vulkan.Interop
 		internal static unsafe extern Result vkWaitForFences (IntPtr device, UInt32 fenceCount, UInt64* Fences, Bool32 waitAll, UInt64 timeout);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern Result vkCreateSemaphore (IntPtr device, SemaphoreCreateInfo* CreateInfo, AllocationCallbacks* Allocator, UInt64* Semaphore);
+		internal static unsafe extern Result vkCreateSemaphore (IntPtr device, SemaphoreCreateInfo* CreateInfo, IntPtr Allocator, UInt64* Semaphore);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern void vkDestroySemaphore (IntPtr device, UInt64 semaphore, AllocationCallbacks* Allocator);
+		internal static unsafe extern void vkDestroySemaphore (IntPtr device, UInt64 semaphore, IntPtr Allocator);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern Result vkCreateEvent (IntPtr device, EventCreateInfo* CreateInfo, AllocationCallbacks* Allocator, UInt64* Event);
+		internal static unsafe extern Result vkCreateEvent (IntPtr device, EventCreateInfo* CreateInfo, IntPtr Allocator, UInt64* Event);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern void vkDestroyEvent (IntPtr device, UInt64 @event, AllocationCallbacks* Allocator);
+		internal static unsafe extern void vkDestroyEvent (IntPtr device, UInt64 @event, IntPtr Allocator);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
 		internal static unsafe extern Result vkGetEventStatus (IntPtr device, UInt64 @event);
@@ -159,52 +159,52 @@ namespace Vulkan.Interop
 		internal static unsafe extern Result vkResetEvent (IntPtr device, UInt64 @event);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern Result vkCreateQueryPool (IntPtr device, QueryPoolCreateInfo* CreateInfo, AllocationCallbacks* Allocator, UInt64* QueryPool);
+		internal static unsafe extern Result vkCreateQueryPool (IntPtr device, QueryPoolCreateInfo* CreateInfo, IntPtr Allocator, UInt64* QueryPool);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern void vkDestroyQueryPool (IntPtr device, UInt64 queryPool, AllocationCallbacks* Allocator);
+		internal static unsafe extern void vkDestroyQueryPool (IntPtr device, UInt64 queryPool, IntPtr Allocator);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
 		internal static unsafe extern Result vkGetQueryPoolResults (IntPtr device, UInt64 queryPool, UInt32 firstQuery, UInt32 queryCount, UIntPtr dataSize, IntPtr Data, DeviceSize stride, QueryResultFlags flags);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern Result vkCreateBuffer (IntPtr device, BufferCreateInfo* CreateInfo, AllocationCallbacks* Allocator, UInt64* Buffer);
+		internal static unsafe extern Result vkCreateBuffer (IntPtr device, BufferCreateInfo* CreateInfo, IntPtr Allocator, UInt64* Buffer);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern void vkDestroyBuffer (IntPtr device, UInt64 buffer, AllocationCallbacks* Allocator);
+		internal static unsafe extern void vkDestroyBuffer (IntPtr device, UInt64 buffer, IntPtr Allocator);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern Result vkCreateBufferView (IntPtr device, BufferViewCreateInfo* CreateInfo, AllocationCallbacks* Allocator, UInt64* View);
+		internal static unsafe extern Result vkCreateBufferView (IntPtr device, BufferViewCreateInfo* CreateInfo, IntPtr Allocator, UInt64* View);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern void vkDestroyBufferView (IntPtr device, UInt64 bufferView, AllocationCallbacks* Allocator);
+		internal static unsafe extern void vkDestroyBufferView (IntPtr device, UInt64 bufferView, IntPtr Allocator);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern Result vkCreateImage (IntPtr device, ImageCreateInfo* CreateInfo, AllocationCallbacks* Allocator, UInt64* Image);
+		internal static unsafe extern Result vkCreateImage (IntPtr device, ImageCreateInfo* CreateInfo, IntPtr Allocator, UInt64* Image);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern void vkDestroyImage (IntPtr device, UInt64 image, AllocationCallbacks* Allocator);
+		internal static unsafe extern void vkDestroyImage (IntPtr device, UInt64 image, IntPtr Allocator);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
 		internal static unsafe extern void vkGetImageSubresourceLayout (IntPtr device, UInt64 image, ImageSubresource* Subresource, SubresourceLayout* Layout);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern Result vkCreateImageView (IntPtr device, ImageViewCreateInfo* CreateInfo, AllocationCallbacks* Allocator, UInt64* View);
+		internal static unsafe extern Result vkCreateImageView (IntPtr device, ImageViewCreateInfo* CreateInfo, IntPtr Allocator, UInt64* View);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern void vkDestroyImageView (IntPtr device, UInt64 imageView, AllocationCallbacks* Allocator);
+		internal static unsafe extern void vkDestroyImageView (IntPtr device, UInt64 imageView, IntPtr Allocator);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern Result vkCreateShaderModule (IntPtr device, ShaderModuleCreateInfo* CreateInfo, AllocationCallbacks* Allocator, UInt64* ShaderModule);
+		internal static unsafe extern Result vkCreateShaderModule (IntPtr device, ShaderModuleCreateInfo* CreateInfo, IntPtr Allocator, UInt64* ShaderModule);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern void vkDestroyShaderModule (IntPtr device, UInt64 shaderModule, AllocationCallbacks* Allocator);
+		internal static unsafe extern void vkDestroyShaderModule (IntPtr device, UInt64 shaderModule, IntPtr Allocator);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern Result vkCreatePipelineCache (IntPtr device, PipelineCacheCreateInfo* CreateInfo, AllocationCallbacks* Allocator, UInt64* PipelineCache);
+		internal static unsafe extern Result vkCreatePipelineCache (IntPtr device, PipelineCacheCreateInfo* CreateInfo, IntPtr Allocator, UInt64* PipelineCache);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern void vkDestroyPipelineCache (IntPtr device, UInt64 pipelineCache, AllocationCallbacks* Allocator);
+		internal static unsafe extern void vkDestroyPipelineCache (IntPtr device, UInt64 pipelineCache, IntPtr Allocator);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
 		internal static unsafe extern Result vkGetPipelineCacheData (IntPtr device, UInt64 pipelineCache, UIntPtr* DataSize, IntPtr Data);
@@ -213,37 +213,37 @@ namespace Vulkan.Interop
 		internal static unsafe extern Result vkMergePipelineCaches (IntPtr device, UInt64 dstCache, UInt32 srcCacheCount, UInt64* SrcCaches);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern Result vkCreateGraphicsPipelines (IntPtr device, UInt64 pipelineCache, UInt32 createInfoCount, GraphicsPipelineCreateInfo* CreateInfos, AllocationCallbacks* Allocator, UInt64* Pipelines);
+		internal static unsafe extern Result vkCreateGraphicsPipelines (IntPtr device, UInt64 pipelineCache, UInt32 createInfoCount, GraphicsPipelineCreateInfo* CreateInfos, IntPtr Allocator, UInt64* Pipelines);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern Result vkCreateComputePipelines (IntPtr device, UInt64 pipelineCache, UInt32 createInfoCount, ComputePipelineCreateInfo* CreateInfos, AllocationCallbacks* Allocator, UInt64* Pipelines);
+		internal static unsafe extern Result vkCreateComputePipelines (IntPtr device, UInt64 pipelineCache, UInt32 createInfoCount, ComputePipelineCreateInfo* CreateInfos, IntPtr Allocator, UInt64* Pipelines);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern void vkDestroyPipeline (IntPtr device, UInt64 pipeline, AllocationCallbacks* Allocator);
+		internal static unsafe extern void vkDestroyPipeline (IntPtr device, UInt64 pipeline, IntPtr Allocator);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern Result vkCreatePipelineLayout (IntPtr device, PipelineLayoutCreateInfo* CreateInfo, AllocationCallbacks* Allocator, UInt64* PipelineLayout);
+		internal static unsafe extern Result vkCreatePipelineLayout (IntPtr device, PipelineLayoutCreateInfo* CreateInfo, IntPtr Allocator, UInt64* PipelineLayout);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern void vkDestroyPipelineLayout (IntPtr device, UInt64 pipelineLayout, AllocationCallbacks* Allocator);
+		internal static unsafe extern void vkDestroyPipelineLayout (IntPtr device, UInt64 pipelineLayout, IntPtr Allocator);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern Result vkCreateSampler (IntPtr device, SamplerCreateInfo* CreateInfo, AllocationCallbacks* Allocator, UInt64* Sampler);
+		internal static unsafe extern Result vkCreateSampler (IntPtr device, SamplerCreateInfo* CreateInfo, IntPtr Allocator, UInt64* Sampler);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern void vkDestroySampler (IntPtr device, UInt64 sampler, AllocationCallbacks* Allocator);
+		internal static unsafe extern void vkDestroySampler (IntPtr device, UInt64 sampler, IntPtr Allocator);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern Result vkCreateDescriptorSetLayout (IntPtr device, DescriptorSetLayoutCreateInfo* CreateInfo, AllocationCallbacks* Allocator, UInt64* SetLayout);
+		internal static unsafe extern Result vkCreateDescriptorSetLayout (IntPtr device, DescriptorSetLayoutCreateInfo* CreateInfo, IntPtr Allocator, UInt64* SetLayout);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern void vkDestroyDescriptorSetLayout (IntPtr device, UInt64 descriptorSetLayout, AllocationCallbacks* Allocator);
+		internal static unsafe extern void vkDestroyDescriptorSetLayout (IntPtr device, UInt64 descriptorSetLayout, IntPtr Allocator);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern Result vkCreateDescriptorPool (IntPtr device, DescriptorPoolCreateInfo* CreateInfo, AllocationCallbacks* Allocator, UInt64* DescriptorPool);
+		internal static unsafe extern Result vkCreateDescriptorPool (IntPtr device, DescriptorPoolCreateInfo* CreateInfo, IntPtr Allocator, UInt64* DescriptorPool);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern void vkDestroyDescriptorPool (IntPtr device, UInt64 descriptorPool, AllocationCallbacks* Allocator);
+		internal static unsafe extern void vkDestroyDescriptorPool (IntPtr device, UInt64 descriptorPool, IntPtr Allocator);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
 		internal static unsafe extern Result vkResetDescriptorPool (IntPtr device, UInt64 descriptorPool, UInt32 flags);
@@ -258,25 +258,25 @@ namespace Vulkan.Interop
 		internal static unsafe extern void vkUpdateDescriptorSets (IntPtr device, UInt32 descriptorWriteCount, WriteDescriptorSet* DescriptorWrites, UInt32 descriptorCopyCount, CopyDescriptorSet* DescriptorCopies);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern Result vkCreateFramebuffer (IntPtr device, FramebufferCreateInfo* CreateInfo, AllocationCallbacks* Allocator, UInt64* Framebuffer);
+		internal static unsafe extern Result vkCreateFramebuffer (IntPtr device, FramebufferCreateInfo* CreateInfo, IntPtr Allocator, UInt64* Framebuffer);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern void vkDestroyFramebuffer (IntPtr device, UInt64 framebuffer, AllocationCallbacks* Allocator);
+		internal static unsafe extern void vkDestroyFramebuffer (IntPtr device, UInt64 framebuffer, IntPtr Allocator);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern Result vkCreateRenderPass (IntPtr device, RenderPassCreateInfo* CreateInfo, AllocationCallbacks* Allocator, UInt64* RenderPass);
+		internal static unsafe extern Result vkCreateRenderPass (IntPtr device, RenderPassCreateInfo* CreateInfo, IntPtr Allocator, UInt64* RenderPass);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern void vkDestroyRenderPass (IntPtr device, UInt64 renderPass, AllocationCallbacks* Allocator);
+		internal static unsafe extern void vkDestroyRenderPass (IntPtr device, UInt64 renderPass, IntPtr Allocator);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
 		internal static unsafe extern void vkGetRenderAreaGranularity (IntPtr device, UInt64 renderPass, Extent2D* Granularity);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern Result vkCreateCommandPool (IntPtr device, CommandPoolCreateInfo* CreateInfo, AllocationCallbacks* Allocator, UInt64* CommandPool);
+		internal static unsafe extern Result vkCreateCommandPool (IntPtr device, CommandPoolCreateInfo* CreateInfo, IntPtr Allocator, UInt64* CommandPool);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern void vkDestroyCommandPool (IntPtr device, UInt64 commandPool, AllocationCallbacks* Allocator);
+		internal static unsafe extern void vkDestroyCommandPool (IntPtr device, UInt64 commandPool, IntPtr Allocator);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
 		internal static unsafe extern Result vkResetCommandPool (IntPtr device, UInt64 commandPool, CommandPoolResetFlags flags);
@@ -429,31 +429,31 @@ namespace Vulkan.Interop
 		internal static unsafe extern void vkCmdExecuteCommands (IntPtr commandBuffer, UInt32 commandBufferCount, IntPtr* CommandBuffers);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern Result vkGetPhysicalDeviceDisplayPropertiesKHR (IntPtr physicalDevice, UInt32* PropertyCount, DisplayPropertiesKhr* Properties);
+		internal static unsafe extern Result vkGetPhysicalDeviceDisplayPropertiesKHR (IntPtr physicalDevice, UInt32* PropertyCount, IntPtr Properties);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern Result vkGetPhysicalDeviceDisplayPlanePropertiesKHR (IntPtr physicalDevice, UInt32* PropertyCount, DisplayPlanePropertiesKhr* Properties);
+		internal static unsafe extern Result vkGetPhysicalDeviceDisplayPlanePropertiesKHR (IntPtr physicalDevice, UInt32* PropertyCount, IntPtr Properties);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
 		internal static unsafe extern Result vkGetDisplayPlaneSupportedDisplaysKHR (IntPtr physicalDevice, UInt32 planeIndex, UInt32* DisplayCount, UInt64* Displays);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern Result vkGetDisplayModePropertiesKHR (IntPtr physicalDevice, UInt64 display, UInt32* PropertyCount, DisplayModePropertiesKhr* Properties);
+		internal static unsafe extern Result vkGetDisplayModePropertiesKHR (IntPtr physicalDevice, UInt64 display, UInt32* PropertyCount, IntPtr Properties);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern Result vkCreateDisplayModeKHR (IntPtr physicalDevice, UInt64 display, DisplayModeCreateInfoKhr* CreateInfo, AllocationCallbacks* Allocator, UInt64* Mode);
+		internal static unsafe extern Result vkCreateDisplayModeKHR (IntPtr physicalDevice, UInt64 display, DisplayModeCreateInfoKhr* CreateInfo, IntPtr Allocator, UInt64* Mode);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
 		internal static unsafe extern Result vkGetDisplayPlaneCapabilitiesKHR (IntPtr physicalDevice, UInt64 mode, UInt32 planeIndex, DisplayPlaneCapabilitiesKhr* Capabilities);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern Result vkCreateDisplayPlaneSurfaceKHR (IntPtr instance, DisplaySurfaceCreateInfoKhr* CreateInfo, AllocationCallbacks* Allocator, UInt64* Surface);
+		internal static unsafe extern Result vkCreateDisplayPlaneSurfaceKHR (IntPtr instance, DisplaySurfaceCreateInfoKhr* CreateInfo, IntPtr Allocator, UInt64* Surface);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern Result vkCreateSharedSwapchainsKHR (IntPtr device, UInt32 swapchainCount, SwapchainCreateInfoKhr* CreateInfos, AllocationCallbacks* Allocator, UInt64* Swapchains);
+		internal static unsafe extern Result vkCreateSharedSwapchainsKHR (IntPtr device, UInt32 swapchainCount, SwapchainCreateInfoKhr* CreateInfos, IntPtr Allocator, UInt64* Swapchains);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern void vkDestroySurfaceKHR (IntPtr instance, UInt64 surface, AllocationCallbacks* Allocator);
+		internal static unsafe extern void vkDestroySurfaceKHR (IntPtr instance, UInt64 surface, IntPtr Allocator);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
 		internal static unsafe extern Result vkGetPhysicalDeviceSurfaceSupportKHR (IntPtr physicalDevice, UInt32 queueFamilyIndex, UInt64 surface, Bool32* Supported);
@@ -468,10 +468,10 @@ namespace Vulkan.Interop
 		internal static unsafe extern Result vkGetPhysicalDeviceSurfacePresentModesKHR (IntPtr physicalDevice, UInt64 surface, UInt32* PresentModeCount, PresentModeKhr* PresentModes);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern Result vkCreateSwapchainKHR (IntPtr device, SwapchainCreateInfoKhr* CreateInfo, AllocationCallbacks* Allocator, UInt64* Swapchain);
+		internal static unsafe extern Result vkCreateSwapchainKHR (IntPtr device, SwapchainCreateInfoKhr* CreateInfo, IntPtr Allocator, UInt64* Swapchain);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern void vkDestroySwapchainKHR (IntPtr device, UInt64 swapchain, AllocationCallbacks* Allocator);
+		internal static unsafe extern void vkDestroySwapchainKHR (IntPtr device, UInt64 swapchain, IntPtr Allocator);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
 		internal static unsafe extern Result vkGetSwapchainImagesKHR (IntPtr device, UInt64 swapchain, UInt32* SwapchainImageCount, UInt64* SwapchainImages);
@@ -486,10 +486,10 @@ namespace Vulkan.Interop
 		internal static unsafe extern Bool32 vkGetPhysicalDeviceWin32PresentationSupportKHR (IntPtr physicalDevice, UInt32 queueFamilyIndex);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern Result vkCreateDebugReportCallbackEXT (IntPtr instance, DebugReportCallbackCreateInfoExt* CreateInfo, AllocationCallbacks* Allocator, UInt64* Callback);
+		internal static unsafe extern Result vkCreateDebugReportCallbackEXT (IntPtr instance, DebugReportCallbackCreateInfoExt* CreateInfo, IntPtr Allocator, UInt64* Callback);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
-		internal static unsafe extern void vkDestroyDebugReportCallbackEXT (IntPtr instance, UInt64 callback, AllocationCallbacks* Allocator);
+		internal static unsafe extern void vkDestroyDebugReportCallbackEXT (IntPtr instance, UInt64 callback, IntPtr Allocator);
 
 		[DllImport (VulkanLibrary, CallingConvention = CallingConvention.Winapi)]
 		internal static unsafe extern void vkDebugReportMessageEXT (IntPtr instance, DebugReportFlagsExt flags, DebugReportObjectTypeExt objectType, UInt64 @object, UIntPtr location, Int32 messageCode, string pLayerPrefix, string pMessage);
