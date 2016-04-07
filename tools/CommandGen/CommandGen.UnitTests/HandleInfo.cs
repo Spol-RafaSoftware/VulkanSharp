@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CommandParser
+namespace CommandGen
 {
 	public class HandleInfo
 	{

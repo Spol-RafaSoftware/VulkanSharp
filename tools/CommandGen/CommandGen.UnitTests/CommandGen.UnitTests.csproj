@@ -46,6 +46,11 @@
     <Compile Include="VkMethodSignature.cs" />
     <Compile Include="VkMethodParameter.cs" />
     <Compile Include="HandleInfo.cs" />
+    <Compile Include="VkFunctionCall.cs" />
+    <Compile Include="VkCallArgument.cs" />
+    <Compile Include="IVkMethodImplementation.cs" />
+    <Compile Include="VkVariableDeclaration.cs" />
+    <Compile Include="VkConditionalCheck.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

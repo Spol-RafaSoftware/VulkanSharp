@@ -610,7 +610,7 @@ namespace VulkanSharp.Generator
 
 		void IsStructBlittable (XElement structElement, string csName)
 		{
-			bool isBlittable = true;
+			// check all members
 			foreach (var member in structElement.Elements ("member"))
 			{
 				string type = member.Element ("type").Value;
@@ -621,35 +621,15 @@ namespace VulkanSharp.Generator
 				// detect if array
 				if (memberValue.IndexOf ('[') > 0)
 				{
-					string[] tokens = memberValue.Split (new[] {
-						'[',
-						']',
-						' '
-					}, StringSplitOptions.RemoveEmptyEntries);
-					if (tokens.Length == 3)
-					{
-						// type should be first element
-						if (!blittableTypes.Contains (tokens [0]))
-						{
-							return;
-						}
-					}
-					else
-					{
-						Console.WriteLine ("warning: {0}.{1} has an invalid array format", csName, memberName);
-						return;
-					}
+					return;
 				}
 				else if (!blittableTypes.Contains (csTypeName))
 				{
-					isBlittable = false;
 					return;
 				}
 			}
-			if (isBlittable)
-			{
-				blittableTypes.Add (csName);
-			}
+
+			blittableTypes.Add (csName);
 		}
 
 		void LearnStructsAndUnions ()

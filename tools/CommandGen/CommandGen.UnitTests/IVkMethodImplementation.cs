@@ -3,10 +3,9 @@ using System.Collections.Generic;
 
 namespace CommandGen
 {
-	public class VkAttributeInfo
+	public interface IVkMethodImplementation
 	{
-		
+		string GetString();
 	}
-
 }
 

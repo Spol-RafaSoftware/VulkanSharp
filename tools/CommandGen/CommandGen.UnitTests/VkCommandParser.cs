@@ -3,7 +3,7 @@ using System.Linq;
 using System.Xml.Linq;
 using System.Collections.Generic;
 
-namespace CommandParser
+namespace CommandGen
 {
 	public class VkCommandParser
 	{
@@ -139,6 +139,8 @@ namespace CommandParser
 					}
 				}	
 
+				arg.UseOut = !arg.IsConst && arg.IsPointer;
+
 				++index;
 			}
 			result.NativeFunction = function;
@@ -188,11 +190,11 @@ namespace CommandParser
 			foreach (var param in signature.Parameters)
 			{				
 				param.CsType = param.Source.BaseCsType;
-				param.UseOut = !param.Source.IsConst && param.Source.IsPointer;
+				param.UseOut = param.Source.UseOut;
 				param.IsFixedArray = param.Source.IsFixedArray;
-				param.IsArray = !param.Source.IsConst && param.Source.LengthVariable != null;
+				param.IsArrayParameter = !param.Source.IsConst && param.Source.LengthVariable != null;
 				param.IsNullableType = param.Source.IsPointer && param.Source.IsOptional;
-				param.UseRef = param.UseOut && blittableTypes.Contains (param.CsType);
+				param.UseRef = param.Source.UseOut && blittableTypes.Contains (param.CsType);
 			}
 
 			result.MethodSignature = signature;
@@ -201,6 +203,64 @@ namespace CommandParser
 		void ParseFunctionCalls (XElement top, VkCommandInfo result)
 		{
 			//throw new NotImplementedException ();
+
+			int noOfOuts = 0;
+			int noOfArguments = result.NativeFunction.Arguments.Count;
+			for (int i = 0; i < noOfArguments; ++i)
+			{
+				var arg = result.NativeFunction.Arguments [i];
+				if (arg.UseOut)
+				{
+					++noOfOuts;
+				}
+			}
+
+			if (result.LocalVariables.Count > 0)
+			{
+				foreach (var local in result.LocalVariables)
+				{
+					var letVar = new VkVariableDeclaration{ Source = local };
+					result.Lines.Add (letVar);
+				}
+
+				var fetch = new VkFunctionCall{ Call = result.NativeFunction };
+				result.Calls.Add (fetch);
+				// method call
+				result.Lines.Add (fetch);
+
+				if (result.NativeFunction.ReturnType != "void")
+				{
+					var errorCheck = new VkConditionalCheck{ReturnType=result.NativeFunction.ReturnType};
+					result.Lines.Add (errorCheck);
+				}
+
+				foreach (var arg in result.NativeFunction.Arguments)
+				{
+					var item = new VkCallArgument{Source = arg };
+					item.IsNull = (arg.UseOut && arg.LengthVariable != null);
+					fetch.Arguments.Add (item);
+				}
+			}
+
+			foreach (var param in result.MethodSignature.Parameters)
+			{
+				if (param.UseOut)
+				{
+					var letVar = new VkVariableDeclaration{ Source = param.Source };
+					result.Lines.Add (letVar);
+				}
+			}
+
+			var body = new VkFunctionCall{ Call = result.NativeFunction };
+			result.Calls.Add (body);
+			foreach (var arg in result.NativeFunction.Arguments)
+			{
+				var item = new VkCallArgument{Source = arg };
+				item.IsNull = (arg.UseOut && arg.LengthVariable != null);
+				body.Arguments.Add (item);
+			}
+
+			result.Lines.Add (body);
 		}
 
 		public VkCommandInfo Parse (XElement top)

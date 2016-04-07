@@ -1,8 +1,13 @@
 
-namespace CommandParser
+namespace CommandGen
 {
 	public class VkFunctionArgument
 	{
+		public bool UseOut {
+			get;
+			set;
+		}
+
 		public string ArgumentCsType {
 			get;
 			set;

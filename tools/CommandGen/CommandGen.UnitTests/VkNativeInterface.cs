@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace CommandParser
+namespace CommandGen
 {
 	public class VkNativeInterface
 	{

@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CommandParser
+namespace CommandGen
 {
 	public class VkCommandInfo
 	{
 		public VkCommandInfo ()
 		{
 			LocalVariables = new List<VkFunctionArgument> ();
+			Lines = new List<IVkMethodImplementation> ();
+			Calls = new List<VkFunctionCall> ();
 		}
 
 		public string CsReturnType {
@@ -26,6 +28,8 @@ namespace CommandParser
 		public List<VkFunctionArgument> LocalVariables { get; set; }
 		public VkNativeInterface NativeFunction { get; set; }
 		public VkMethodSignature MethodSignature { get; set; }
+		public List<IVkMethodImplementation> Lines {get;set;}
+		public List<VkFunctionCall> Calls {get;set;}
 	}
 }
 

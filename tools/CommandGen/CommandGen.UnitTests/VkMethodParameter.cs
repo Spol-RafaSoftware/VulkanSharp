@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace CommandParser
+namespace CommandGen
 {
 	public class VkMethodParameter
 	{
@@ -35,7 +35,7 @@ namespace CommandParser
 			set;
 		}
 
-		public bool IsArray {
+		public bool IsArrayParameter {
 			get;
 			set;
 		}
